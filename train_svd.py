@@ -815,7 +815,7 @@ def main():
     parameters_list = []
 
     # Customize the parameters that need to be trained; if necessary, you can uncomment them yourself.
-
+    '''
     for name, para in unet.named_parameters():
         if 'temporal_transformer_block' in name:
             parameters_list.append(para)
@@ -829,14 +829,15 @@ def main():
         weight_decay=args.adam_weight_decay,
         eps=args.adam_epsilon,
     )
+    '''
 
-    # optimizer = optimizer_cls(
-    #     unet.parameters(),
-    #     lr=args.learning_rate,
-    #     betas=(args.adam_beta1, args.adam_beta2),
-    #     weight_decay=args.adam_weight_decay,
-    #     eps=args.adam_epsilon,
-    # )
+    optimizer = optimizer_cls(
+        unet.parameters(),
+        lr=args.learning_rate,
+        betas=(args.adam_beta1, args.adam_beta2),
+        weight_decay=args.adam_weight_decay,
+        eps=args.adam_epsilon,
+    )
 
     # check parameters
     if accelerator.is_main_process:
@@ -946,6 +947,7 @@ def main():
     ):
         add_time_ids = [fps, motion_bucket_id, noise_aug_strength]
         
+        '''
         passed_add_embed_dim = unet.module.config.addition_time_embed_dim * \
             len(add_time_ids)
         expected_add_embed_dim = unet.module.add_embedding.linear_1.in_features
@@ -953,7 +955,6 @@ def main():
 
         passed_add_embed_dim = unet.config.addition_time_embed_dim * len(add_time_ids)
         expected_add_embed_dim = unet.add_embedding.linear_1.in_features
-        '''
 
         if expected_add_embed_dim != passed_add_embed_dim:
             raise ValueError(
