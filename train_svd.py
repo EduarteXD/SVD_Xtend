@@ -946,9 +946,14 @@ def main():
     ):
         add_time_ids = [fps, motion_bucket_id, noise_aug_strength]
 
+        '''
         passed_add_embed_dim = unet.module.config.addition_time_embed_dim * \
             len(add_time_ids)
         expected_add_embed_dim = unet.module.add_embedding.linear_1.in_features
+        '''
+
+        passed_add_embed_dim = unet.config.addition_time_embed_dim * len(add_time_ids)
+        expected_add_embed_dim = unet.add_embedding.linear_1.in_features
 
         if expected_add_embed_dim != passed_add_embed_dim:
             raise ValueError(
