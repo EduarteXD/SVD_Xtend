@@ -815,7 +815,7 @@ def main():
     parameters_list = []
 
     # Customize the parameters that need to be trained; if necessary, you can uncomment them yourself.
-    '''
+    
     for name, para in unet.named_parameters():
         if 'temporal_transformer_block' in name:
             parameters_list.append(para)
@@ -829,8 +829,8 @@ def main():
         weight_decay=args.adam_weight_decay,
         eps=args.adam_epsilon,
     )
+    
     '''
-
     optimizer = optimizer_cls(
         unet.parameters(),
         lr=args.learning_rate,
@@ -838,6 +838,7 @@ def main():
         weight_decay=args.adam_weight_decay,
         eps=args.adam_epsilon,
     )
+    '''
 
     # check parameters
     if accelerator.is_main_process:
