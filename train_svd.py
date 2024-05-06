@@ -115,7 +115,7 @@ def rand_log_normal(shape, loc=0., scale=1., device='cpu', dtype=torch.float32):
 
 
 class DummyDataset(Dataset):
-    def __init__(self, num_samples=100000, width=1024, height=576, sample_frames=25):
+    def __init__(self, num_samples=100000, width=1024, height=576, sample_frames=16):
         """
         Args:
             num_samples (int): Number of samples in the dataset.
@@ -123,7 +123,7 @@ class DummyDataset(Dataset):
         """
         self.num_samples = num_samples
         # Define the path to the folder containing video frames
-        self.base_folder = 'bdd100k/images/track/mini'
+        self.base_folder = 'extracted_frames_grouped_cmpImg'
         self.folders = os.listdir(self.base_folder)
         self.channels = 3
         self.width = width
@@ -365,7 +365,7 @@ def parse_args():
     parser.add_argument(
         "--num_frames",
         type=int,
-        default=25,
+        default=16,
     )
     parser.add_argument(
         "--width",
@@ -947,12 +947,14 @@ def main():
     ):
         add_time_ids = [fps, motion_bucket_id, noise_aug_strength]
         
+        # For multi card
         '''
         passed_add_embed_dim = unet.module.config.addition_time_embed_dim * \
             len(add_time_ids)
         expected_add_embed_dim = unet.module.add_embedding.linear_1.in_features
         '''
 
+        # For single card
         passed_add_embed_dim = unet.config.addition_time_embed_dim * len(add_time_ids)
         expected_add_embed_dim = unet.add_embedding.linear_1.in_features
 

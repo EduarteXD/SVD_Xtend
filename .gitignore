@@ -1,5 +1,5 @@
 # Initially taken from GitHub's Python gitignore file
-
+extracted_frames_grouped_cmpImg
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
