@@ -160,6 +160,11 @@ class DummyDataset(Dataset):
         # Initialize a tensor to store the pixel values
         pixel_values = torch.empty((self.sample_frames, self.channels, self.height, self.width))
 
+        is_reverse = random.randint(0, 1)
+
+        if is_reverse:
+            selected_frames.reverse()
+
         # Load and process each frame
         for i, frame_name in enumerate(selected_frames):
             frame_path = os.path.join(folder_path, frame_name)
@@ -948,16 +953,17 @@ def main():
     ):
         add_time_ids = [fps, motion_bucket_id, noise_aug_strength]
         
-        # For multi card
-        '''
+        # For multi card & DeepSpeed
+        
         passed_add_embed_dim = unet.module.config.addition_time_embed_dim * \
             len(add_time_ids)
         expected_add_embed_dim = unet.module.add_embedding.linear_1.in_features
+    
         '''
-
         # For single card
         passed_add_embed_dim = unet.config.addition_time_embed_dim * len(add_time_ids)
         expected_add_embed_dim = unet.add_embedding.linear_1.in_features
+        '''
 
         if expected_add_embed_dim != passed_add_embed_dim:
             raise ValueError(
